@@ -13,7 +13,7 @@ from typing import Callable, Tuple
 import stable_baselines3
 from stable_baselines3.common.env_checker import check_env
 
-from stable_baselines3 import PPO
+from pydairlib.perceptive_locomotion.perception_learning.PPO.ppo import PPO
 from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback, CallbackList
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.monitor import Monitor
@@ -292,7 +292,7 @@ def _run_training(config, args):
 
     if args.test:
         model = PPO(policy_type, env, n_steps=128, n_epochs=2,
-                    batch_size=32, policy_kwargs=policy_kwargs,)
+                    batch_size=32,)# policy_kwargs=policy_kwargs,)
     else:
         tensorboard_log = f"{log_dir}runs/test"        
         #model = PPO(
@@ -302,11 +302,11 @@ def _run_training(config, args):
         #    tensorboard_log=tensorboard_log,)
         #test_folder = "rl/tmp/DrakeCassie/eval_logs/test/vision_separate"
         #model_path = path.join(test_folder, 'best_model.zip')
-        model_path = 'PPO_studentNN_stairimitation.zip'
-        
-        model = PPO.load(model_path, env, learning_rate = linear_schedule(1e-7), max_grad_norm = 0.05,
-                        clip_range = linear_schedule(0.03), target_kl = 0.003, ent_coef=0.01, 
-                        n_steps=int(4096/num_env), n_epochs=4,
+        #model_path = 'PPO_studentNN_stairimitation.zip'
+        model_path = 'PPO_studentNN_tanh'
+        model = PPO.load(model_path, env, learning_rate = linear_schedule(3e-7), max_grad_norm = 0.05,
+                        clip_range = linear_schedule(0.05), target_kl = 0.003, ent_coef=0.01, 
+                        n_steps=int(4096/num_env), n_epochs=5,
                         batch_size=256*num_env, seed=42, device='auto',
                         tensorboard_log=tensorboard_log)
         
@@ -330,7 +330,7 @@ def _run_training(config, args):
         render=False)
 
     checkpoint_callback = CheckpointCallback(
-        save_freq=eval_freq*5,
+        save_freq=eval_freq*3,
         save_path="./logs/",
         name_prefix="rl_model",
     )

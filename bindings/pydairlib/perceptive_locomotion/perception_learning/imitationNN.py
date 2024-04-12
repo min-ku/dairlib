@@ -194,29 +194,29 @@ class CustomNetwork(nn.Module):
         alip_state_dim = 4
         self.alip_mlp = nn.Sequential(
             layer_init(nn.Linear(alip_state_dim, 128)),
-            nn.Tanh(),  # Using ReLU activation for ALIP MLP
+            nn.ReLU(),  # Using ReLU activation for ALIP MLP
             layer_init(nn.Linear(128, 64)),
-            nn.Tanh(),  # Using ReLU activation for ALIP MLP
+            nn.ReLU(),  # Using ReLU activation for ALIP MLP
         )
 
         # Combined MLP for actor
         self.actor_combined_mlp = nn.Sequential(
             layer_init(nn.Linear(320, 256)),  # Updated input size
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
             layer_init(nn.Linear(256, 256)),
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
             layer_init(nn.Linear(256, self.latent_dim_pi), std = 0.03),
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
         )
 
         # Combined MLP for critic
         self.critic_combined_mlp = nn.Sequential(
             layer_init(nn.Linear(320, 256)),  # Updated input size
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
             layer_init(nn.Linear(256, 256)),
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
             layer_init(nn.Linear(256, self.latent_dim_vf), std = 1.),
-            nn.Tanh(),  # Using ReLU activation
+            nn.ReLU(),  # Using ReLU activation
         )
         
     def forward(self, observations: th.Tensor) -> Tuple[th.Tensor, th.Tensor]:
@@ -422,14 +422,14 @@ def _main():
         env,
         train_expert_dataset,
         test_expert_dataset,
-        epochs=20,
+        epochs=15,
         scheduler_gamma=0.8,
         learning_rate=0.7,
         log_interval=100,
         no_cuda=False,
-        seed=22,
-        batch_size=8,
-        test_batch_size=8,
+        seed=23,
+        batch_size=16,
+        test_batch_size=16,
     )
 
     student.save("PPO_studentNN_separate_new2")
