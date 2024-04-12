@@ -123,6 +123,7 @@ class CustomNetwork(nn.Module):
             nn.ReLU(),
         )
 
+        
     def forward(self, observations: th.Tensor) -> Tuple[th.Tensor, th.Tensor]:
         return self.forward_actor(observations), self.forward_critic(observations)
 
@@ -303,7 +304,7 @@ def _run_training(config, args):
         #test_folder = "rl/tmp/DrakeCassie/eval_logs/test/vision_separate"
         #model_path = path.join(test_folder, 'best_model.zip')
         #model_path = 'PPO_studentNN_stairimitation.zip'
-        model_path = 'PPO_studentNN_tanh'
+        model_path = 'PPO_studentNN_Relu'
         model = PPO.load(model_path, env, learning_rate = linear_schedule(3e-7), max_grad_norm = 0.05,
                         clip_range = linear_schedule(0.05), target_kl = 0.003, ent_coef=0.01, 
                         n_steps=int(4096/num_env), n_epochs=5,
@@ -375,7 +376,7 @@ def _main():
     # https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html
     config = {
         "policy_type": CustomActorCriticPolicy,
-        "total_timesteps": 1500000 if not args.test else 5, # 2e6
+        "total_timesteps": 2e6 if not args.test else 5, # 2e6
         "env_name": "DrakeCassie-v0",
         "num_workers": num_env,
         "local_log_dir": args.log_path,
