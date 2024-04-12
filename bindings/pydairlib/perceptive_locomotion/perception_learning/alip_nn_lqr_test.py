@@ -126,12 +126,12 @@ def run(sim_params: CassieFootstepControllerEnvironmentOptions, i):
     #datapoint = ic_generator.choose(i)
     #datapoint['desired_velocity'] = np.array([0.4, 0])
     datapoint = ic_generator.random()
-    v_des_theta = np.pi / 6
-    v_des_norm = 1.0
-    v_theta = np.random.uniform(-v_des_theta, v_des_theta)
-    v_norm = np.random.uniform(0.2, v_des_norm)
-    datapoint['desired_velocity'] = np.array([v_norm * np.cos(v_theta), v_norm * np.sin(v_theta)]).flatten()
-
+    #v_des_theta = np.pi / 6
+    #v_des_norm = 1.0
+    #v_theta = np.random.uniform(-v_des_theta, v_des_theta)
+    #v_norm = np.random.uniform(0.2, v_des_norm)
+    #datapoint['desired_velocity'] = np.array([v_norm * np.cos(v_theta), v_norm * np.sin(v_theta)]).flatten()
+    datapoint['desired_velocity'] = np.array([0.8, 0])
     context = diagram.CreateDefaultContext()
 
     # timing aliases
